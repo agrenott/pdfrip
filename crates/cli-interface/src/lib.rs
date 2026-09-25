@@ -23,6 +23,7 @@ use engine::{
         dictionary::LineProducer,
         mask::MaskProducer,
         number_ranges::RangeProducer,
+        word_combinator::{CaseMode, WordCombinatorProducer},
         Producer,
     },
     CancellationToken, JobOptions, JobResult, JobStatus, ProgressUpdate,
@@ -166,6 +167,15 @@ fn select_producer(subcommand: Method) -> anyhow::Result<Box<dyn Producer>> {
                 args.min_length,
                 args.max_length,
                 FillCharset::from_name(&args.fill_charset).map_err(anyhow::Error::msg)?,
+            )
+            .map_err(anyhow::Error::msg)?,
+        ),
+        Method::WordCombinator(args) => Box::from(
+            WordCombinatorProducer::try_new(
+                &args.wordlist,
+                args.min_words,
+                args.max_words,
+                CaseMode::from_name(&args.case_mode).map_err(anyhow::Error::msg)?,
             )
             .map_err(anyhow::Error::msg)?,
         ),

@@ -122,5 +122,8 @@ pub mod mask;
 /// Generates candidates that must contain one of a supplied set of words.
 pub mod contains_word;
 
+/// Generates candidates by concatenating wordlist entries with case variants.
+pub mod word_combinator;
+
 /// Does a traditional brute-force search through all possible printable-ASCII combinations.
 pub mod default_query;

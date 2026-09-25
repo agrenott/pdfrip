@@ -79,6 +79,27 @@ pub struct ContainsWordArgs {
 }
 
 #[derive(Args, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct WordCombinatorArgs {
+    /// Path to the wordlist whose entries are concatenated into candidates.
+    pub wordlist: String,
+
+    #[clap(long, default_value_t = 1, value_parser = value_parser!(usize))]
+    /// Minimum number of words to concatenate, inclusive.
+    pub min_words: usize,
+
+    #[clap(long, default_value_t = 2, value_parser = value_parser!(usize))]
+    /// Maximum number of words to concatenate, inclusive.
+    pub max_words: usize,
+
+    #[clap(long, default_value = "lower-upper")]
+    /// Case variants applied to each word slot. One of: none, lower-upper, all.
+    ///
+    /// `none` uses each word as-is, `lower-upper` tries lowercase and uppercase, and `all` adds a
+    /// capitalized variant on top of lowercase and uppercase.
+    pub case_mode: String,
+}
+
+#[derive(Args, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 /// Enumerate a span of years, testing passwords in a configurable date format.
 pub struct DateArgs {
     /// Output format built from the tokens `DD`, `MM`, and `YYYY`.
@@ -100,6 +121,7 @@ pub enum Method {
     CustomQuery(CustomQueryArgs),
     Mask(MaskArgs),
     ContainsWord(ContainsWordArgs),
+    WordCombinator(WordCombinatorArgs),
     Date(DateArgs),
     DefaultQuery(DefaultQueryArgs),
 }

@@ -35,6 +35,7 @@
 - **Custom Query Builder:** You can write your own queries like `STRING{69-420}` which would generate and use a wordlist with the full number range.
 - **Mask Bruteforce:** Use bounded masks like `?u{4}?d{4}` or `DOC-?d{2,4}` to target structured passwords directly.
 - **Contains-Word Bruteforce:** Require one of a set of known words while brute-forcing the remaining positions.
+- **Word-Combinator Bruteforce:** Concatenate wordlist entries into multi-word candidates and automatically try lowercase, uppercase, and capitalized case variants of each word.
 - **Date Bruteforce:** You can pass in a year range and an output format such as `DDMMYYYY`, `DD.MM.YYYY`, or `YYYY-MM-DD` to brute-force common date-shaped passwords.
 - **Number Bruteforce:** Give an inclusive number range like `5000-100000` and PDFRip will try every value in that range.
 - **Default Bruteforce:** Specify a maximum and optionally a minimum length for the password search and PDFRip will try every printable ASCII password in that span, including spaces, digits, letters, and punctuation.
@@ -119,6 +120,14 @@ Use a bounded mask for mixed uppercase/digit formats:
 Require one of a set of known words while brute-forcing the remaining positions:
 
     $ pdfrip --file encrypted.pdf contains-word known-words.txt --min-length 8 --max-length 10 --fill-charset ascii
+
+Concatenate 1 to 2 wordlist entries and automatically try lowercase/uppercase variants of each word:
+
+    $ pdfrip --file encrypted.pdf word-combinator words.txt --min-words 1 --max-words 2 --case-mode lower-upper
+
+Also include a capitalized variant (e.g. `Summer`) on top of lowercase and uppercase:
+
+    $ pdfrip --file encrypted.pdf word-combinator words.txt --min-words 2 --max-words 2 --case-mode all
 
 Tune workers and batching explicitly:
 
